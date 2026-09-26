@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 type SidebarProps = {
@@ -10,10 +11,28 @@ const links = [
   { to: '/about-us', label: 'About Us' },
 ]
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => window.matchMedia('(min-width: 768px)').matches,
+  )
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)')
+    const onChange = () => setIsDesktop(media.matches)
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [])
+
+  return isDesktop
+}
+
 function Sidebar({ open, onClose }: SidebarProps) {
+  const isDesktop = useIsDesktop()
+  const visible = isDesktop || open
+
   return (
     <>
-      {open ? (
+      {open && !isDesktop ? (
         <button
           type="button"
           aria-label="Close menu"
@@ -23,6 +42,8 @@ function Sidebar({ open, onClose }: SidebarProps) {
       ) : null}
 
       <aside
+        aria-hidden={!visible}
+        inert={!visible}
         className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-zinc-800 bg-zinc-950 transition-transform duration-200 md:static md:z-0 md:translate-x-0 ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
