@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { primaryLinks } from './nav'
 
 type SidebarProps = {
   open: boolean
   onClose: () => void
 }
-
-const links = [
-  { to: '/', label: 'Information' },
-  { to: '/about-us', label: 'About Us' },
-]
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(
@@ -44,18 +40,21 @@ function Sidebar({ open, onClose }: SidebarProps) {
       <aside
         aria-hidden={!visible}
         inert={!visible}
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-zinc-800 bg-zinc-950 transition-transform duration-200 md:static md:z-0 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-white/10 bg-navy-950 transition-transform duration-200 md:static md:z-0 md:translate-x-0 ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b border-zinc-800 px-5">
-          <span className="text-lg font-semibold tracking-wide text-zinc-100">
-            ASQ
-          </span>
+        <div className="flex h-20 items-center justify-between border-b border-white/10 px-5">
+          <div>
+            <p className="font-display text-xl text-white">ASQ Consultancy</p>
+            <p className="text-[11px] tracking-[0.18em] text-gold-400">
+              Strategy. Projects. M&amp;A.
+            </p>
+          </div>
           <button
             type="button"
             aria-label="Close menu"
-            className="rounded-md p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 md:hidden"
+            className="rounded-md p-2 text-zinc-400 hover:bg-navy-800 hover:text-zinc-100 md:hidden"
             onClick={onClose}
           >
             <svg
@@ -72,17 +71,17 @@ function Sidebar({ open, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex flex-1 flex-col gap-1 p-3">
-          {links.map((link) => (
+          {primaryLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               end={link.to === '/'}
               onClick={onClose}
               className={({ isActive }) =>
-                `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                `rounded-sm px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-zinc-800 text-white'
-                    : 'text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100'
+                    ? 'bg-navy-800 text-gold-400'
+                    : 'text-zinc-400 hover:bg-navy-900 hover:text-zinc-100'
                 }`
               }
             >
